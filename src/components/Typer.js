@@ -14,9 +14,7 @@ function Typer({text, playing, gameOver}) {
         setStartTime(new Date());
         setTo(setInterval(() => setCurrentTime(new Date()), 1000));
         document.getElementById('typer').focus();
-        document.querySelector(`#char-1`).scrollIntoView({
-            behavior: 'smooth'
-          });
+        scrollToFocus(1);
     }, [playing]);
 
     useEffect(() => {
@@ -53,9 +51,12 @@ function Typer({text, playing, gameOver}) {
         setType(`${type}${e.key}`);
 
         e.preventDefault();
-        document.querySelector(`#char-${type.length}`).scrollIntoView({
-            behavior: 'smooth'
-          });
+        scrollToFocus();
+    }
+
+    function scrollToFocus(focus) {
+        var topOfElement = document.querySelector(`#char-${focus || type.length || 1}`).offsetTop - 100;
+window.scroll({ top: topOfElement, behavior: "smooth" });
     }
 
     return (
@@ -66,7 +67,7 @@ function Typer({text, playing, gameOver}) {
             {
                 Object.assign([], text).map((c, i) => <div key={i} id={`char-${i}`} >
                     
-                    <div style={{marginBottom: 10, color: i === type.length ? '#F9DC5C' : 'inherit', position: 'relative'}}>
+                    <div style={{marginBottom: 10, paddingTop: 60, marginTop: -60, color: i === type.length ? '#F9DC5C' : 'inherit', position: 'relative'}}>
                     {
                         i === type.length ? <div style={{color: 'F9DC5C', position: 'absolute', bottom: '-25px'}}>^</div> : null
                     }

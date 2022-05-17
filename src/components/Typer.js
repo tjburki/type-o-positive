@@ -18,21 +18,25 @@ function Typer({text, playing, gameOver}) {
     }, [playing]);
 
     useEffect(() => {
-        if (!startTime || !currentTime || timeLimit - timeElapsed() > 0) return;
+        if (!startTime || !currentTime || (timeRemaining() > 0 && type.length !== text.length)) return;
 
         clearInterval(to);
         if (!type.length) {
             gameOver({wpm: 0, errors: 0, adjusted: 0});
             return;
         }
-        const wpm = text.slice(0, type.length).match(/ /g).length;
+        const wpm = text.slice(0, type.length).match(/ /g).length / ((Math.max(timeRemaining(), 0) / timeLimit) || 1);
         const errors = Object.assign([], type).filter((ty, i) => ty !== text[i]).length;
-        const adjusted = Math.max(Math.floor(wpm - (.75 * errors)), 0);
+        const adjusted = Math.max(Math.floor(wpm * (1 - (errors / text.length))), 0);
         gameOver({wpm, errors, adjusted});
     }, [currentTime])
 
     function timeElapsed() {
         return Math.round((currentTime.getTime() - startTime.getTime()) / 1000);
+    }
+
+    function timeRemaining() {
+        return timeLimit - timeElapsed();
     }
 
     function onKeyDown(e) {

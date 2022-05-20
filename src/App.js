@@ -20,9 +20,15 @@ function App() {
   const wpmMultiplier = 60 / timeLimit;
 
   useEffect(() => {
+    document.body.addEventListener('keydown', e => {
+      if (playing || e.keyCode !== 13) return; 
 
-    document.body.addEventListener('keydown', newGameFromKey);
-  }, []);
+      e.preventDefault();
+      setTextId(getRandomTextId());
+      setPlayCount(playCount + 1);
+      setPlaying(true);
+    });
+  }, [playing]);
 
   useEffect(() => {
     if (!playing) {
@@ -44,15 +50,6 @@ function App() {
       setPlaying(false);
     }
   }, [currentTime]);
-
-  function newGameFromKey(e, playing) {
-    if (playing || e.keyCode !== 13) return; 
-
-    e.preventDefault();
-    setTextId(getRandomTextId());
-    setPlayCount(playCount + 1);
-    setPlaying(true);
-  }
 
   function getRandomTextId() {
     return Math.floor(Math.random() * excerpts.length);

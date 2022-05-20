@@ -1,84 +1,57 @@
 import React, { useState, useEffect } from 'react';
+import Word from './Word';
+const excerpts = require('../excerpts.json');
 
-function Typer({text, playing, gameOver}) {
-    const [type, setType] = useState('');
-    const [startTime, setStartTime] = useState(null);
-    const [currentTime, setCurrentTime] = useState(null);
-    const [to, setTo] = useState(null);
-    const timeLimit = 60;
+function Typer({textId, playing, gameOver, visible, playCount}) {
+    const typer = React.useRef();
+    const text = excerpts[textId];
+    const [typedWords, setTypedWords] = useState({});
+    const [activeWord, setActiveWord] = useState(0);
     
+    const words = text.split(' ');
+    const typedKeys = Object.keys(typedWords);
 
     useEffect(() => {
         if (!playing) return;
-        setType('');
-        setStartTime(new Date());
-        setTo(setInterval(() => setCurrentTime(new Date()), 1000));
-        document.getElementById('typer').focus();
-        scrollToFocus(1);
+
+        setActiveWord(0);
+        setTypedWords({});
     }, [playing]);
 
     useEffect(() => {
-        if (!startTime || !currentTime || (timeRemaining() > 0 && type.length !== text.length)) return;
-
-        clearInterval(to);
-        if (!type.length) {
-            gameOver({wpm: 0, errors: 0, adjusted: 0});
-            return;
-        }
-        const wpm = text.slice(0, type.length).match(/ /g).length / ((Math.max(timeRemaining(), 0) / timeLimit) || 1);
-        const errors = Object.assign([], type).filter((ty, i) => ty !== text[i]).length;
-        const adjusted = Math.max(Math.floor(wpm * (1 - (errors / text.length))), 0);
-        gameOver({wpm, errors, adjusted});
-    }, [currentTime])
-
-    function timeElapsed() {
-        return Math.round((currentTime.getTime() - startTime.getTime()) / 1000);
-    }
-
-    function timeRemaining() {
-        return timeLimit - timeElapsed();
-    }
-
-    function onKeyDown(e) {
-        if (!playing) return;
-        if (e.keyCode === 8) {
-            setType(type.slice(0, type.length - 1));
+        if (playing && typedKeys.length !== words.length) return;
+     
+        if (!typedKeys.length) {
+            gameOver({wordCount: 0, accuracy: 0});
             return;
         }
 
-        if (e.key.length !== 1) {
-            return;
-        }
+        const wordCount = typedKeys.length;
+        const errors = typedKeys.filter(k => typedWords[k] !== words[k]).length;
+        const errorPercentage = (errors / typedKeys.length);
+        const accuracy = 1 - (isNaN(errorPercentage) ? 1 : errorPercentage);
 
-        if (type.length >= text.length) return;
-    
-        setType(`${type}${e.key}`);
-
-        e.preventDefault();
-        scrollToFocus();
-    }
-
-    function scrollToFocus(focus) {
-        var topOfElement = document.querySelector(`#char-${focus || type.length || 1}`).offsetTop - 100;
-window.scroll({ top: topOfElement, behavior: "smooth" });
-    }
+        gameOver({wordCount, accuracy});
+    }, [playing, typedKeys])
 
     return (
-        <div tabindex="0" id="typer" style={{display: 'flex'}} onKeyDown={onKeyDown}>
-            {playing && startTime && currentTime && <div style={{position: 'fixed', bottom: 15, right: 15, padding: 15, backgroundColor: 'black'}}>{
-                timeLimit - timeElapsed()
-            }</div>}
+        <div ref={typer} id="typer" style={{display: visible ? 'flex' : 'none'}}>
             {
-                Object.assign([], text).map((c, i) => <div key={i} id={`char-${i}`} >
-                    
-                    <div style={{marginBottom: 10, paddingTop: 60, marginTop: -60, color: i === type.length ? '#F9DC5C' : 'inherit', position: 'relative'}}>
-                    {
-                        i === type.length ? <div style={{color: 'F9DC5C', position: 'absolute', bottom: '-25px'}}>^</div> : null
-                    }
-                    {
-                    c === ' ' ? <span>&nbsp;</span> : <span>{c}</span>}</div>
-                    <div style={{marginBottom: 20, color: i < type.length ? type[i] === text[i] ? '#3185FC' : '#E84855' : 'transparent'}}>{type[i] || <span>&nbsp;</span>}</div>
-                </div>)
+                words.map((word, i) => 
+                    <Word 
+                        key={`${playCount}-${i}`} 
+                        word={word} 
+                        activated={activeWord === i} 
+                        onComplete={w => { setTypedWords({...typedWords, [i]: w}); setActiveWord(activeWord + 1);}} 
+                        onBack={() => {                     
+                            const ntw = {...typedWords};
+                            delete ntw[activeWord];
+                            setActiveWord(activeWord - 1); 
+                            setTypedWords(ntw); 
+                        }} 
+                        playing={playing}
+                    />
+                )
             }
         </div>
     );

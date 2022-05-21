@@ -21,14 +21,14 @@ function App() {
 
   useEffect(() => {
     document.body.addEventListener('keydown', e => {
-      if (playing || e.keyCode !== 13) return; 
+      if (e.keyCode !== 13) return; 
 
       e.preventDefault();
       setTextId(getRandomTextId());
       setPlayCount(playCount + 1);
       setPlaying(true);
     });
-  }, [playing]);
+  }, []);
 
   useEffect(() => {
     if (!playing) {

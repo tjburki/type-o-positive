@@ -51,6 +51,7 @@ function Word({word, activated = false, onComplete, onBack, playing, top}) {
                 ref={input} 
                 onKeyDown={e => {
                     e.preventDefault();
+                    e.stopPropagation();
 
                     if (!playing || e.keyCode === 13) return;
                 

@@ -15,17 +15,23 @@
   padding: 25px;
   padding-bottom: 15px;
   border-bottom: 1px solid #EEE;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .body {
-  padding: 25px;
-  flex: 1;
-          overflow: hidden;
-          overflow-y: auto;
-          mask: linear-gradient(transparent 10%, #414650, transparent 90%);
-          position: relative;
-          
-          
+  padding: 25px;     
+  flex: 1;   
+  overflow: hidden;
+  position: relative;
+}
+
+#typer-container {
+  mask: linear-gradient(transparent 10%, #414650, transparent 90%);
+  overflow: hidden;
+  overflow-y: auto;
+  height: 100%;
 }
 
 #typer {
@@ -35,6 +41,7 @@
     display: flex;
     flex-wrap: wrap;    
     margin: 30vh 0;
+    cursor: none;
 }
 
 footer {

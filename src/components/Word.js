@@ -20,7 +20,7 @@ function Word({word, activated = false, onComplete, onBack, playing, top}) {
     useEffect(() => {
         if (!activated) return;
 
-        const body = document.getElementById('body');
+        const body = document.getElementById('typer-container');
         body.scrollTo({
             top: input.current.offsetTop - (window.innerHeight * .4),
             behavior: "smooth"

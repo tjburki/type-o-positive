@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} style={{maxWidth: 200}} />
+        <img src={logo} style={{maxWidth: 125}} />
         {/* <NewGameButton label='New Game' /> */}
       </header>
       <div id='body' className='body'>

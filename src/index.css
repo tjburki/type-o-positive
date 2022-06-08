@@ -27,3 +27,8 @@ button {
 button.action {
   background-color: #3185FC;
 }
+
+button:disabled {
+  background-color: #BBB;
+  color: #999;
+}

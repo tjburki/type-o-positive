@@ -2,7 +2,7 @@
   "short_name": "Type-o Positive",
   "name": "Type-o Positive Typing Test",
   "icons": [
- 
+    "./favicon.ico"
   ],
   "start_url": ".",
   "display": "standalone",

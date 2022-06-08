@@ -44,7 +44,7 @@ function Game() {
         <>
             {
                 !playing && results === null && 
-                    <form onSubmit={e => { e.preventDefault(); setPlaying(true); }} style={{display: 'flex', height: '100%', fontSize: '2em', justifyContent: 'center', alignItems: 'center'}}>
+                    <form onSubmit={e => { e.preventDefault(); setPlaying(true); }} style={{display: 'flex', height: '100%', fontSize: '2rem', justifyContent: 'center', alignItems: 'center'}}>
                         <NewGameButton label="Start" />
                     </form>
             }
@@ -61,7 +61,7 @@ function Game() {
                 playing && 
                     <>
                         <Timer buzz={() => setPlaying(false)} tick={setTimeRemaining} />
-                        { timeRemaining && <TimeRemainingDisplay remaining={timeRemaining} /> }
+                        { timeRemaining && <TimeRemainingDisplay onStop={() => setPlaying(false)} remaining={timeRemaining} /> }
                     </>
             }
             {

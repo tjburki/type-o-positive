@@ -2,26 +2,26 @@ import React from 'react';
 
 function Result({score, label, mid, high, best}) {
     return (
-        <div>
+        <div style={{width: '100%', height: '100%', position: 'relative'}}>
             <div style={{
-                padding: 50, 
-                margin: 25, 
+                padding: 15, 
+                margin: 5, 
                 backgroundColor: parseInt(score) >= high ? '#3185FC' : parseInt(score) >= mid ? '#F9DC5C' : '#E84855',
                 borderRadius: '50%', 
                 border: '5px solid white',
-                height: 100,
-                width: 100,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                height: 75,
+                width: 75
             }}>
                 <div style={{
-                    fontSize: '2.5em'
+                    fontSize: '1.8rem'
                 }}>
                     <b>{score}</b>
                 </div>
-                <div style={{fontSize: '.8em'}}>
+                <div style={{fontSize: '.6rem'}}>
                     <b>{label}</b>
                 </div>
             </div>

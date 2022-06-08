@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function Word({word, activated = false, onComplete, onBack, playing, top}) {
+function Word({word, activated = false, onComplete, onBack, playing}) {
     const input = React.useRef();
     const [type, setType] = useState('');
 
@@ -15,6 +15,7 @@ function Word({word, activated = false, onComplete, onBack, playing, top}) {
         selection.addRange(range);  
 
         input.current.focus();
+        input.current.click();
     }, [activated, type]);
 
     useEffect(() => {

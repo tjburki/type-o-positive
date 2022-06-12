@@ -1,6 +1,7 @@
 import logo from './logo.png';
 import './App.css';
 import Game from './components/Game';
+import DonateButton from './components/DontateButton';
 
 function App() {
   return (
@@ -11,8 +12,13 @@ function App() {
       <div id='body' className='body'>
         <Game />  
       </div>
-      <footer style={{padding: 25}}>
-        &copy; Tyler Burki {new Date().getFullYear()}
+      <footer style={{padding: 25, display: 'flex', justifyContent: 'space-between'}}>
+        <span>
+          &copy; Tyler Burki {new Date().getFullYear()}
+        </span>
+        <span>
+          <DonateButton />
+        </span>
       </footer>
     </div>
   );

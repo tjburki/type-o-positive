@@ -44,8 +44,16 @@ function Game() {
         <>
             {
                 !playing && results === null && 
-                    <form onSubmit={e => { e.preventDefault(); setPlaying(true); }} style={{display: 'flex', height: '100%', fontSize: '2rem', justifyContent: 'center', alignItems: 'center'}}>
-                        <NewGameButton label="Start" />
+                    <form onSubmit={e => { e.preventDefault(); setPlaying(true); }} style={{display: 'flex', flexDirection: 'column', height: '100%', fontSize: '2rem', justifyContent: 'center', alignItems: 'center'}}>
+                        <div>
+                            One minute typing test.
+                        </div>
+                        <div style={{margin: 25}}>
+                            Try not to be type-o positive.
+                        </div>
+                        <div>
+                            <NewGameButton label="Start" />
+                        </div>
                     </form>
             }
             {
